@@ -15,22 +15,21 @@ from bokeh.transform import transform
 import subprocess
 import os
 
-
 color_palette=[
-  '#5e4fa2', '#3288bd', '#66c2a5', '#abdda4', '#e6f598', '#ffffbf', '#fee08b', '#fdae61', 
+  '#5e4fa2', '#3288bd', '#66c2a5', '#abdda4', '#e6f598', '#ffffbf', '#fee08b', '#fdae61',
   '#f46d43', '#d53e4f', '#9e0142',
-  '#003366', '#dec9ab', '#d25757', '#f7d708','#1c29b5', '#b0c997', '#005555', '#f9c3d3', '#0f4c81', 
-  '#edc06a', '#bd5915', '#b097c9', '#c2002c', '#808080', 
+  '#003366', '#dec9ab', '#d25757', '#f7d708','#1c29b5', '#b0c997', '#005555', '#f9c3d3', '#0f4c81',
+  '#edc06a', '#bd5915', '#b097c9', '#c2002c', '#808080',
   '#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f', '#e5c494', '#b3b3b3',
   '#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666',
-  '#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', 
+  '#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5',
   '#d9d9d9','#bc80bd', '#ccebc5', '#ffed6f',
 
-  '#bc9797', '#a0db8e', '#d69ce1', '#caffcd', '#ffcaf8', '#cafff7', '#f1b4b2', '#030449', 
+  '#bc9797', '#a0db8e', '#d69ce1', '#caffcd', '#ffcaf8', '#cafff7', '#f1b4b2', '#030449',
 
   '#feff97', '#fd81eb', '#8fb8ff', '#bdffa3', '#ffb5b5', '#0f4c81', '#d7d8ee','#73c7de','#aaaacc',
   '#758eb7', '#f2b6ae', '#f0a890', '#a860a8', '#604890', '#f07878', '#443133', '#ffdecc', '#65bfc1',
-  '#ffad19', '#ff9e7d', '#dda97b','#a1b1cc','#d6a562','#c9a48f','#c7906d','#f9733e', 
+  '#ffad19', '#ff9e7d', '#dda97b','#a1b1cc','#d6a562','#c9a48f','#c7906d','#f9733e',
   '#ffc104', '#624a4c', '#c1b8c9',
 
       "#FFFF00", "#1CE6FF", "#FF34FF", "#FF4A46", "#008941", "#006FA6", "#A30059",
@@ -41,7 +40,7 @@ color_palette=[
           "#372101", "#FFB500", "#C2FFED", "#A079BF", "#CC0744", "#C0B9B2", "#C2FF99", "#001E09",
           "#00489C", "#6F0062", "#0CBD66", "#EEC3FF", "#456D75", "#B77B68", "#7A87A1", "#788D66",
           "#885578", "#FAD09F", "#FF8A9A", "#D157A0", "#BEC459", "#456648", "#0086ED", "#886F4C",
-          
+
           "#34362D", "#B4A8BD", "#00A6AA", "#452C2C", "#636375", "#A3C8C9", "#FF913F", "#938A81",
           "#575329", "#00FECF", "#B05B6F", "#8CD0FF", "#3B9700", "#04F757", "#C8A1A1", "#1E6E00",
           "#7900D7", "#A77500", "#6367A9", "#A05837", "#6B002C", "#772600", "#D790FF", "#9B9700",
@@ -50,7 +49,7 @@ color_palette=[
           "#83AB58", "#001C1E", "#D1F7CE", "#004B28", "#C8D0F6", "#A3A489", "#806C66", "#222800",
           "#BF5650", "#E83000", "#66796D", "#DA007C", "#FF1A59", "#8ADBB4", "#1E0200", "#5B4E51",
           "#C895C5", "#320033", "#FF6832", "#66E1D3", "#CFCDAC", "#D0AC94", "#7ED379", "#012C58",
-          
+
           "#7A7BFF", "#D68E01", "#353339", "#78AFA1", "#FEB2C6", "#75797C", "#837393", "#943A4D",
           "#B5F4FF", "#D2DCD5", "#9556BD", "#6A714A", "#001325", "#02525F", "#0AA3F7", "#E98176",
           "#DBD5DD", "#5EBCD1", "#3D4F44", "#7E6405", "#02684E", "#962B75", "#8D8546", "#9695C5",
@@ -68,23 +67,23 @@ color_palette=[
           "#1A3A2A", "#494B5A", "#A88C85", "#F4ABAA", "#A3F3AB", "#00C6C8", "#EA8B66", "#958A9F",
           "#BDC9D2", "#9FA064", "#BE4700", "#658188", "#83A485", "#453C23", "#47675D", "#3A3F00",
           "#061203", "#DFFB71", "#868E7E", "#98D058", "#6C8F7D", "#D7BFC2", "#3C3E6E", "#D83D66",
-          
+
           "#2F5D9B", "#6C5E46", "#D25B88", "#5B656C", "#00B57F", "#545C46", "#866097", "#365D25",
           "#252F99", "#00CCFF", "#674E60", "#FC009C", "#92896B",
 
-          '#5e4fa2', '#3288bd', '#66c2a5', '#abdda4', '#e6f598', '#ffffbf', '#fee08b', '#fdae61', 
+          '#5e4fa2', '#3288bd', '#66c2a5', '#abdda4', '#e6f598', '#ffffbf', '#fee08b', '#fdae61',
   '#f46d43', '#d53e4f', '#9e0142',
-  '#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', 
+  '#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5',
   '#d9d9d9','#bc80bd', '#ccebc5', '#ffed6f',
   '#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f', '#e5c494', '#b3b3b3',
   '#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666',
 
-  '#bc9797', '#a0db8e', '#d69ce1', '#caffcd', '#ffcaf8', '#cafff7', '#f1b4b2', '#030449', 
-  '#003366', '#dec9ab', '#d25757', '#f7d708','#1c29b5', '#b0c997', '#005555', '#f9c3d3', '#0f4c81', 
-  '#edc06a', '#bd5915', '#b097c9', '#c2002c', '#808080', 
+  '#bc9797', '#a0db8e', '#d69ce1', '#caffcd', '#ffcaf8', '#cafff7', '#f1b4b2', '#030449',
+  '#003366', '#dec9ab', '#d25757', '#f7d708','#1c29b5', '#b0c997', '#005555', '#f9c3d3', '#0f4c81',
+  '#edc06a', '#bd5915', '#b097c9', '#c2002c', '#808080',
   '#feff97', '#fd81eb', '#8fb8ff', '#bdffa3', '#ffb5b5', '#0f4c81', '#d7d8ee','#73c7de','#aaaacc',
   '#758eb7', '#f2b6ae', '#f0a890', '#a860a8', '#604890', '#f07878', '#443133', '#ffdecc', '#65bfc1',
-  '#ffad19', '#ff9e7d', '#dda97b','#a1b1cc','#d6a562','#c9a48f','#c7906d','#f9733e', 
+  '#ffad19', '#ff9e7d', '#dda97b','#a1b1cc','#d6a562','#c9a48f','#c7906d','#f9733e',
   '#ffc104', '#624a4c', '#c1b8c9',
 
 
@@ -96,7 +95,7 @@ color_palette=[
           "#372101", "#FFB500", "#C2FFED", "#A079BF", "#CC0744", "#C0B9B2", "#C2FF99", "#001E09",
           "#00489C", "#6F0062", "#0CBD66", "#EEC3FF", "#456D75", "#B77B68", "#7A87A1", "#788D66",
           "#885578", "#FAD09F", "#FF8A9A", "#D157A0", "#BEC459", "#456648", "#0086ED", "#886F4C",
-          
+
           "#34362D", "#B4A8BD", "#00A6AA", "#452C2C", "#636375", "#A3C8C9", "#FF913F", "#938A81",
           "#575329", "#00FECF", "#B05B6F", "#8CD0FF", "#3B9700", "#04F757", "#C8A1A1", "#1E6E00",
           "#7900D7", "#A77500", "#6367A9", "#A05837", "#6B002C", "#772600", "#D790FF", "#9B9700",
@@ -105,7 +104,7 @@ color_palette=[
           "#83AB58", "#001C1E", "#D1F7CE", "#004B28", "#C8D0F6", "#A3A489", "#806C66", "#222800",
           "#BF5650", "#E83000", "#66796D", "#DA007C", "#FF1A59", "#8ADBB4", "#1E0200", "#5B4E51",
           "#C895C5", "#320033", "#FF6832", "#66E1D3", "#CFCDAC", "#D0AC94", "#7ED379", "#012C58",
-          
+
           "#7A7BFF", "#D68E01", "#353339", "#78AFA1", "#FEB2C6", "#75797C", "#837393", "#943A4D",
           "#B5F4FF", "#D2DCD5", "#9556BD", "#6A714A", "#001325", "#02525F", "#0AA3F7", "#E98176",
           "#DBD5DD", "#5EBCD1", "#3D4F44", "#7E6405", "#02684E", "#962B75", "#8D8546", "#9695C5",
@@ -123,7 +122,7 @@ color_palette=[
           "#1A3A2A", "#494B5A", "#A88C85", "#F4ABAA", "#A3F3AB", "#00C6C8", "#EA8B66", "#958A9F",
           "#BDC9D2", "#9FA064", "#BE4700", "#658188", "#83A485", "#453C23", "#47675D", "#3A3F00",
           "#061203", "#DFFB71", "#868E7E", "#98D058", "#6C8F7D", "#D7BFC2", "#3C3E6E", "#D83D66",
-          
+
           "#2F5D9B", "#6C5E46", "#D25B88", "#5B656C", "#00B57F", "#545C46", "#866097", "#365D25",
           "#252F99", "#00CCFF", "#674E60", "#FC009C", "#92896B"
     ]
@@ -142,8 +141,8 @@ if __name__ == '__main__':
   parser.add_argument('alldata_filtered', help='alldata_filtered.csv data table from tprk_pipeline.py')
   parser.add_argument('metadata', help='metadata.csv, same as used with tprk_pipeline.py')
   parser.add_argument('-svg', action='store_true', help='Use this flag to output graphs in .svg format. '
-    'By default, plots will be in .html.')
-  
+  'By default, plots will be in .html.')
+
   try:
     args = parser.parse_args()
   except:
@@ -169,7 +168,7 @@ if __name__ == '__main__':
   variable_region_figs = []
   variable_region_hms = []
   df_columns = list(df)
-  sample_list.sort()  
+  sample_list.sort()
 
   # Drop PacBio columns
   for column in df_columns:
@@ -217,7 +216,7 @@ if __name__ == '__main__':
       # Only use rows with actual data in it
       if not row_parts_all_zero and read_seq!="":
         sample_reads.append(read_seq)
-        data[read_seq] = sample_frequencies       
+        data[read_seq] = sample_frequencies
         color_num = color_num + 1
 
     df2 = pd.DataFrame()
@@ -228,24 +227,24 @@ if __name__ == '__main__':
     if(variable_region=="V1"):
       brew_pal = blues
     elif(variable_region=="V2"):
-      brew_pal = bugn 
+      brew_pal = bugn
     elif(variable_region=="V3"):
       brew_pal = bupu
     elif(variable_region=="V4"):
-      brew_pal = orrd 
+      brew_pal = orrd
     elif(variable_region=="V5"):
-      brew_pal = gnbu 
+      brew_pal = gnbu
     elif(variable_region=="V6"):
-      brew_pal = ylgn 
+      brew_pal = ylgn
     else:
-      brew_pal = purd 
+      brew_pal = purd
     # Reverse the colors so darker colors at max
     brew_pal = brew_pal[::-1]
     mapper = LinearColorMapper(palette=brew_pal, low=0.1, high=100, nan_color = "#d3d3d3")
 
-    hm = figure(x_range=sample_list, y_range=sample_reads, title = variable_region, 
+    hm = figure(x_range=sample_list, y_range=sample_reads, title = variable_region,
       toolbar_location = None, x_axis_location = "above", #background_fill_color = "#d3d3d3",
-      plot_height = (len(sample_reads)*20), 
+      plot_height = (len(sample_reads)*20),
       # plot_width = (len(sample_list)*25) + (len(max(sample_reads, key = len)) * 8),
       min_border_right = 80,
       y_axis_location = "left",

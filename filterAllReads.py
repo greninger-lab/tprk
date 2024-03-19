@@ -1,7 +1,7 @@
 import subprocess
 import argparse
 import sys
-import os 
+import os
 import regex
 
 # Filters allreads.csv and outputs allreads_filtered.csv based on flags -f and -c.
@@ -54,7 +54,7 @@ def filter_table(relative_freq_filter, count_filter, table, is_heatmap):
 								# print(newline)
 					# Heatmap only! Check if there are samples with the same read name that do have the read, in which case we keep the whole line.
 					# Even indexes should be relative frequencies
-					else:					
+					else:
 						if (part != "NA" and (index % 2) == 0) and float(part) >= relative_freq_filter:
 							relative_freq_check = True
 						# Odd indexes should be counts
@@ -88,7 +88,7 @@ def filter_table(relative_freq_filter, count_filter, table, is_heatmap):
 		sort_command = "sort -t, -k1,1 -k3,3nr < " + table.split(".csv")[0] + "_filtered.csv > a.tmp && mv a.tmp " + table.split(".csv")[0] + "_filtered.csv"
 	subprocess.call(sort_command, shell=True)
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='tprK project. Currently the program expects '
 	 'matched single-end trimmed Illumina and PacBio Q20 reads for the same sample in one big folder.')
 	parser.add_argument('-a', '--allreads_file', required=False,
@@ -106,7 +106,7 @@ if __name__ == '__main__':
 	except:
 		parser.print_help()
 		sys.exit(1)
-    
+
 	relative_freq_filter = float(args.relative_freq_filter)
 	count_filter = float(args.count_filter)
 

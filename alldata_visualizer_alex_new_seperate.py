@@ -10,6 +10,7 @@ from bokeh.palettes import brewer
 from bokeh.plotting import figure, show, output_file
 from bokeh.models import ColumnDataSource, LabelSet, ColorBar, BasicTicker, PrintfTickFormatter,HoverTool, LinearColorMapper, Slider, CustomJS, Label, WheelZoomTool, ResetTool, Button, TextInput
 from bokeh.models.widgets import Panel, Paragraph, Div
+#from bokeh.models.widgets import TabPanel, Paragraph, Div
 from bokeh.layouts import gridplot, column, layout, widgetbox, row
 from bokeh.transform import transform
 from math import pi
@@ -236,6 +237,9 @@ if __name__ == '__main__':
 		sys.exit(0)
 
 	df = pd.read_csv(args.alldata_filtered,index_col=False)
+
+	#df = df.reindex(index=df.index[::-1])
+
 	metadata_file = args.metadata
 	source = ColumnDataSource(df)
 
@@ -262,7 +266,7 @@ if __name__ == '__main__':
 	variable_region_figs = []
 	variable_region_hms = []
 	df_columns = list(df)
-	sample_list.sort()
+	#sample_list.sort()
 
 	# Drop PacBio columns
 	for column in df_columns:
@@ -280,7 +284,6 @@ if __name__ == '__main__':
 	gnbu = brewer['GnBu'][9][0:7]
 	purd = brewer['PuRd'][9][0:7]
 	ylgn = brewer['YlGn'][9][0:7]
-
 
 	for variable_region in variable_regions_list:
 		region_df = df.loc[df.Region==variable_region]
@@ -309,6 +312,7 @@ if __name__ == '__main__':
 			sample_frequencies = []
 			num = 0
 			row_parts_all_zero = True
+
 			for i, row_parts in enumerate(row):
 				if(i!=0):
 					num = float(row_parts)
@@ -323,10 +327,15 @@ if __name__ == '__main__':
 				sample_reads.append(read_seq)
 				data[read_seq] = sample_frequencies
 				color_num = color_num + 1
+		#print(sample_reads)
+		#print(data)
+		
+		#fig.vbar_stack(sample_reads, x = 'samples', width = 0.9, source=data,
 		fig.vbar_stack(sample_reads, x = 'samples', width = 0.9, source=data,
 			fill_color=color_palette[0:len(sample_reads)], fill_alpha = 1, hover_alpha = 0.6,
 			hover_color = color_palette[0:len(sample_reads)], line_alpha = 0,
 			)
+		
 		variable_region_figs.append(fig)
 
 		# Rotate x-axis labels
@@ -342,18 +351,19 @@ if __name__ == '__main__':
 		elif(variable_region=="V2"):
 			brew_pal = bugn
 		elif(variable_region=="V3"):
-			brew_pal = bupu
+			brew_pal = purd
 		elif(variable_region=="V4"):
-			brew_pal = orrd
-		elif(variable_region=="V5"):
 			brew_pal = gnbu
+		elif(variable_region=="V5"):
+			brew_pal = orrd
 		elif(variable_region=="V6"):
 			brew_pal = ylgn
 		else:
-			brew_pal = purd
+			brew_pal = bupu
 		# Reverse the colors so darker colors at max
 		brew_pal = brew_pal[::-1]
-		mapper = LinearColorMapper(palette=brew_pal, low=1, high=100, low_color = "#ffffff")
+		#mapper = LinearColorMapper(palette=brew_pal, low=1, high=100, low_color = "#ffffff")
+		mapper = LinearColorMapper(palette=brew_pal, low=.25, high=100, low_color = "#ffffff")
 
 
 		# Set different scales of plot sizes for large datasets
