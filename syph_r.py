@@ -1,20 +1,20 @@
 import subprocess
 import argparse
 import sys
-import os 
+import os
 import regex
 from itertools import chain
 import numpy as np
 from Bio.Seq import Seq
 import pandas as pd
 
-V1_list = list()	
-V2_list = list()	
-V3_list = list()	
-V4_list = list()	
-V5_list = list()	
-V6_list = list()	
-V7_list = list()	
+V1_list = list()
+V2_list = list()
+V3_list = list()
+V4_list = list()
+V5_list = list()
+V6_list = list()
+V7_list = list()
 V1_dna = list()
 V2_dna = list()
 V3_dna = list()
@@ -38,8 +38,10 @@ def find_region(sample, input_format, is_pacbio, current_dir, strain_name):
 		line_block = 2
 	else:
 		line_block = 4
-		
+
+	#for line_num, line in enumerate(open(current_dir + "/" + sample)):
 	for line_num, line in enumerate(open(current_dir + "/" + sample)):
+	#for line_num, line in enumerate(open("/Users/administrator/Desktop/Illumina_PacBio/denoised_fastas/PB_Peru214361_trim.noprimers.filtered.RAD.nolines.fix.fasta")):
 		# Finds read name
 		if (line_num % line_block == 0):
 			read_name = line
@@ -57,7 +59,7 @@ def find_region(sample, input_format, is_pacbio, current_dir, strain_name):
 			read_seq = str((Seq(line).reverse_complement()))
 			# Matches each read seq to the region
 			region_seq(read_seq, read_name, sample_name, is_pacbio, current_dir, num_input_reads)
-		
+
 	summary_table(num_input_reads, strain_name)
 
 def summary_table(num_input_reads, strain_name):
@@ -68,7 +70,7 @@ def summary_table(num_input_reads, strain_name):
 
 # Matches a read to a specified string of nucleotides, "primer", with less than 3 errors.
 def fuzzy_match(read_seq, primer):
-	# Finds exact match first. 
+	# Finds exact match first.
 	exact_match = regex.search(primer,read_seq)
 	if exact_match:
 		return exact_match[0].rstrip()
@@ -159,7 +161,7 @@ def region_seq(read_seq, read_name, sample_name, is_pacbio, current_dir, num_inp
 			elif (region == "V7"):
 				start = (str.index(read_seq, match_seq) + 24)
 				if fuzzy_match(read_seq, "CAAGTTTGCATACACTTT"):
-					end = (str.index(read_seq, fuzzy_match(read_seq, "CAAGTTTGCATACACTTT")))	
+					end = (str.index(read_seq, fuzzy_match(read_seq, "CAAGTTTGCATACACTTT")))
 					v_list = V7_list
 					v_dna = V7_dna
 			if end != 0:
@@ -168,7 +170,7 @@ def region_seq(read_seq, read_name, sample_name, is_pacbio, current_dir, num_inp
 				# Translates the sequence
 				region_nuc = str((Seq(region_seq).reverse_complement()))
 				region_seq = translate_nucs(region_nuc)
-				all_assignments.write(sample_name + "," + read_name.rstrip()  + "," + region_seq + "," + 
+				all_assignments.write(sample_name + "," + read_name.rstrip()  + "," + region_seq + "," +
 					region_nuc + "," + region + "\n")
 
 				# If the sequence is already in a global list of sequences for this region,
@@ -202,21 +204,29 @@ def make_table(strain_name, current_dir):
 	Vlist_of_dna = [V1_dna, V2_dna, V3_dna, V4_dna, V5_dna, V6_dna, V7_dna]
 	variable_regions = ["V1", "V2", "V3", "V4", "V5", "V6", "V7"]
 
-	table = open(current_dir + "/" + strain_name + "_final_data.csv", "w+")
-	table2 = open(current_dir + "/" + strain_name + "_over5count_final_dna_data.csv", "w+")
+	#Switch AA with Nucleotides change names
+
+	table2 = open(current_dir + "/" + strain_name + "_final_data.csv", "w+")
+	#table = open(current_dir + "/" + strain_name + "_final_data.csv", "w+")
+
+	#table2 = open(current_dir + "/" + strain_name + "_over5count_final_dna_data.csv", "w+")
+
+	#table2 = open(current_dir + "/" + strain_name + "_overcount_final_AA_data.csv", "w+")
+	table = open(current_dir + "/" + strain_name + "_overcount_final_AA_data.csv", "w+")
+
 	table.write("Region,Read,RelativeFreq,Count" + "\n")
 	table2.write("Region,Read,RelativeFreq,Count" + "\n")
 	for index, v_list in enumerate(Vlist_of_aas):
 		total = total_count(v_list)
 		for read_seq, count in v_list:
-			table.write(variable_regions[index] + "," + read_seq + "," + 
+			table.write(variable_regions[index] + "," + read_seq + "," +
 				str(((count / total) * 100)) + "," + str(count) + "\n")
 	for index, v_list in enumerate(Vlist_of_dna):
 		total = total_count(v_list)
 		for read_seq, count in v_list:
-			if(count>=5):
-				table2.write(variable_regions[index] + "," + read_seq + "," + 
-					str(((count / total) * 100)) + "," + str(count) + "\n")
+			#if(count>=5):
+			table2.write(variable_regions[index] + "," + read_seq + "," +
+				str(((count / total) * 100)) + "," + str(count) + "\n")
 
 	# Filters out the lines with greater than 1% to a separate _final_data_fitered.csv.
 	#subprocess.call("awk -F\"[,|\\(]\" \'($3+0)>=1{print}\' " + strain_name + "_final_data.csv > " + strain_name + "_final_data_filtered.csv", shell=True)
@@ -227,25 +237,25 @@ def translate_nucs(read_seq):
 	translation = str(coding_dna.translate())
 	return translation
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='tprK project. Example usage: syph.py -i fasta -p pacbio')
 	parser.add_argument('-i', '--input_format', required=True,
 		help='Specify either fasta or fastq. Will take all the files in this folder with the specified extension. ')
 	parser.add_argument('-pacbio', action='store_true', help='Write this flag to specify this file is a pacbio file. '
-		'Do not use with -illumina') 
-	parser.add_argument('-illumina', action='store_true', help='Write this flag to specify this file is an illumina file. ' 
+		'Do not use with -illumina')
+	parser.add_argument('-illumina', action='store_true', help='Write this flag to specify this file is an illumina file. '
 		'Do not use with -pacbio')
 	parser.add_argument('-s', '--strain_name', required=True,
 		help='Specify what strain name.')
 	parser.add_argument('-d', '--directory', help='Pass directory (used when passed in from within R.')
-	
+
 	# Checks for argument sanity.
 	try:
 		args = parser.parse_args()
 	except:
 		parser.print_help()
 		sys.exit(1)
-	
+
 	current_dir = args.directory
 
 	input_format = args.input_format.lower()
@@ -284,7 +294,7 @@ if __name__ == '__main__':
 	# Get rid of stupidly long name in PacBio.
 	if "RAD" in strain_name:
 		strain_name = strain_name.split(".noprimers.filtered.RAD.nolines.fix.fasta")[0]
-	
+
 	# Checks if file exists already, and skips.
 	file_tobemade = strain_name + "_final_data.csv"
 	if os.path.isfile(file_tobemade):
@@ -294,15 +304,15 @@ if __name__ == '__main__':
 
 		# Matches each read to a region and starts building a list.
 		find_region(file_name, input_format, is_pacbio, current_dir, strain_name)
-		
+
 		# Builds the frequency final_table.csv for each file.
 		make_table(strain_name, current_dir)
 		V1_list = list()
-		V2_list = list()	
-		V3_list = list()	
-		V4_list = list()	
-		V5_list = list()	
-		V6_list = list()	
+		V2_list = list()
+		V3_list = list()
+		V4_list = list()
+		V5_list = list()
+		V6_list = list()
 		V7_list = list()
 		V1_dna = list()
 		V2_dna = list()
