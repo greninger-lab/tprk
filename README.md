@@ -1,4 +1,4 @@
-# This is an old version of the peo please use 
+# This is an old version of the repo please use 
 
 https://github.com/greninger-lab/TPRK-Pipeline
 
