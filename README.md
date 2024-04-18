@@ -1,3 +1,7 @@
+# This is an old version of the peo please use 
+
+https://github.com/greninger-lab/TPRK-Pipeline
+
 # tprK pipeline
 This pipeline was designed to take Illumina and PacBio files straight off the sequencer to a final comparison table of all the different variable regions with their relative frequencies, as well as various pretty plots along the way.
 
